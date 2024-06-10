@@ -43,4 +43,4 @@ End Goal: The successful containerisation and deployment of the Wisecow
 application to the Kubernetes environment with an automated CI/CD pipeline and
 secured with TLS communication.
 
-Output: ![Output]("C:\Users\Asus\Pictures\Screenshots\output.png")
+Output: ![Output](C:\Users\Asus\Pictures\Screenshots\output.png)
