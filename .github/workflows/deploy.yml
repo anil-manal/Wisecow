@@ -34,6 +34,11 @@ jobs:
       with:
         version: 'latest'
 
+    - name: Debug Kubernetes context
+      run: kubectl cluster-info
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f wisecow-deployment.yaml
