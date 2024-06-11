@@ -38,19 +38,29 @@ jobs:
       run: mkdir -p $HOME/.kube
 
     - name: Set up KUBECONFIG
-      run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      run: |
+        echo "apiVersion: v1
+        kind: Config
+        clusters:
+        - cluster:
+            server: https://kubernetes.docker.internal:6443
+          name: kubernetes
+        contexts:
+        - context:
+            cluster: kubernetes
+            user: my-service-account
+          name: my-context
+        current-context: my-context
+        users:
+        - name: my-service-account
+          user:
+            token: ${{ secrets.KUBE_TOKEN }}" > $HOME/.kube/config
 
     - name: Debug Kubernetes context
-      run: kubectl cluster-info --server=https://kubernetes.docker.internal:6443
-      env:
-        KUBECONFIG: $HOME/.kube/config
+      run: kubectl cluster-info
 
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f wisecow-deployment.yaml
         kubectl apply -f wisecow-service.yaml
         kubectl apply -f wisecow-ingress.yaml
-      env:
-        KUBECONFIG: $HOME/.kube/config
