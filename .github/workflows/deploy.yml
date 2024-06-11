@@ -43,7 +43,7 @@ jobs:
         KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
     - name: Debug Kubernetes context
-      run: kubectl cluster-info
+      run: kubectl cluster-info --server=https://kubernetes.docker.internal:6443
       env:
         KUBECONFIG: $HOME/.kube/config
 
