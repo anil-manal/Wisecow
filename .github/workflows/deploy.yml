@@ -34,10 +34,18 @@ jobs:
       with:
         version: 'latest'
 
+    - name: Create kubeconfig directory
+      run: mkdir -p $HOME/.kube
+
+    - name: Set up KUBECONFIG
+      run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+
     - name: Debug Kubernetes context
       run: kubectl cluster-info
       env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        KUBECONFIG: $HOME/.kube/config
 
     - name: Deploy to Kubernetes
       run: |
@@ -45,4 +53,4 @@ jobs:
         kubectl apply -f wisecow-service.yaml
         kubectl apply -f wisecow-ingress.yaml
       env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        KUBECONFIG: $HOME/.kube/config
